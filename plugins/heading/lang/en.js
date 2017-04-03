@@ -41,10 +41,14 @@ CKEDITOR.plugins.setLang( 'heading', 'en', {
   ],
 
   outlineLabel: 'Outline / TOC',
+  outlineBanner: 'Document Outline from Headings',
+  tocBanner: 'Insert Table of Contents into Document',
+  labelFixNestingErrors: 'Fix Nesting Errors',
   includeLevelLabel: 'Include the following heading levels a in table of contents',
   includeLevel2: 'Level 2',
   includeLevel3: 'Level 2 and 3',
   includeLevel4: 'Level 2, 3 and 4',
   includeLevel5: 'Level 2, 3, 4 and 5',
   includeLevel6: 'Level 2, 3, 4, 5 and 6'
+
 });
