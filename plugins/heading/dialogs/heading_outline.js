@@ -12,29 +12,81 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
     return '<h2 style="white-space: normal; font-weight: bold; margin-top: 0em; font-size: 135%">' + content + '</h2>';
   }
 
-  function htmlTOC(hlist, index, level) {
+  function deleteToc() {
 
-    var html = '';
+    var toc = myEditor.document.findOne('div#a11yFirstToc');
 
-    if (index < hlist.length) {
+    if (toc) {
+      toc.remove();
+    }
 
-      var h = hlist[index];
+    var target = myEditor.document.findOne('a.a11yFirstTocItem');
 
-      if (h.level == level) {
-        html = '<li style="margin-left: ' + level + 'em;">' + h.name + ' (level ' + h.level + ', subsections: ' + h.subsections + ', error: ' + h.nestingError + ', parent: ' + (h.parent ? h.parent.name : 'none') +')</li>';
-        html += htmlTOC(hlist, (index+1), level);
-      }
-      else {
-        if (h.level > level) {
-          html = '<li><ol>';
-          html += htmlTOC(hlist, index, (level+1));
-          html += '</li></ol>';
+    while (target) {
+      target.remove();
+      target = myEditor.document.findOne('a.a11yFirstTocItem');
+    }
+
+  }
+
+  function htmlToc(hlist, maxLevel) {
+
+    var count, html;
+
+    function setItemId(item) {
+
+      var id = "a11yFirstToc" + count;
+      var target = CKEDITOR.dom.element.createFromHtml( '<a class="a11yFirstTocItem" id="' + id + '"></a>' );
+
+      item.ckElement.append(target);
+
+      count += 1;
+
+      return id;
+    }
+
+    function nextTocItem(index, level) {
+      var html = '';
+
+      if (index < hlist.length) {
+
+        var h = hlist[index];
+
+        if (h.level <= maxLevel) {
+          var id = setItemId(h);
+
+          if (h.level == level) {
+            html = '<li><a href="#' + id + '">' + h.name  +'</a></li>';
+            html += nextTocItem((index+1), level);
+          }
+          else {
+            if (h.level > level) {
+              html = '<ol>';
+              html += nextTocItem(index, (level+1));
+            }
+            else {
+              html += '</ol>';
+              html += nextTocItem(index, (level-1));                
+            }
+          }
         }
         else {
-          html += htmlTOC(hlist, index, (level-1));                
+          html += nextTocItem((index+1), level); 
         }
       }
+
+      return html;
+
     }
+
+    html = '<div id="a11yFirstToc"><h2 class="a11yFirstToc">' + lang.tocTitle + '</h2><ol>';
+
+    count = 1;
+
+    html += nextTocItem(0, 2);
+
+    html += '</ol></div>';
+
     return html;
 
   } // end htmlTOC
@@ -177,6 +229,7 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
         if ( typeof element.getName !== 'function' ) return;
 
         var tagName = element.getName();
+        var flag = element.hasClass('a11yFirstToc');
 
         switch ( tagName ) {
           case 'h1':
@@ -207,7 +260,7 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
             break;  
         }
 
-        if (headingInfo) {
+        if (headingInfo && !flag) {
           
           if (lastHeadingInfo && (headingInfo.level > (lastHeadingInfo.level + 1))) {
             headingInfo.nestingError = true;
@@ -279,6 +332,8 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
 
   var headingList = getHeadingList(myEditor.document.getBody());
 
+  var tocLevel = 3;
+
   return {
     title: lang.outlineLabel,
     minWidth: 500,
@@ -297,10 +352,33 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
         var newName = 'h' + headingList[i].level;
         var elem = headingList[i].ckElement;
 
+        console.log(elem.getName() + ': ' + elem.getText() + ' id:' + elem.getId());
+
         if (elem.getName() !== newName) {
           elem.renameNode(newName);
         }
       }
+
+      if (tocLevel > 0) {
+
+        deleteToc();
+
+        var elem = myEditor.document.getBody().getFirst();
+        var toc = CKEDITOR.dom.element.createFromHtml( htmlToc(headingList, tocLevel) );
+
+        if (elem) {
+          elem.insertBeforeMe(toc);        
+        }
+        else {
+          myEditor.document.getBody().appendHtml(toc)
+        }
+
+
+      }
+      else {
+        // remove A11yTOC from document if it exists
+      }
+
     },
 
     contents: [
