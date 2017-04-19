@@ -93,42 +93,58 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
 
   function htmlOutline(hlist) {
 
-    function th(content, style) {
+    function th(content, style, title) {
       if (typeof style !== 'string') style='';
-      return '<th style="font-weight: bold; padding: 0.25em; ' + style + '">' + content + '</th>';
+      style += '; font-size: 110%';
+
+      if (typeof title !== 'string') title='';
+
+      if (title.length) {
+        return '<th style="' + style + '" title="' + title + '">' + content + '</th>';        
+      }
+      else {
+        return '<th style="' + style + '">' + content + '</th>';        
+      }
     }
 
     function td(content, style) {
       if (typeof style !== 'string') style='';
-      return '<td style="padding: 0.25em; ' + style + '">' + content + '</td>';
+      return '<td style="' + style + '">' + content + '</td>';
     }
 
-    var html = '<table style="margin: 0; padding: 0; margin-bottom: 1em;">';
+    var html = '<table style="margin: 0; padding: 0; margin-bottom: 1em; margin-top: 0.5em;">';
 
-    html += '<thead><tr>';
-    html += th('Headings', 'width: 20em');
-    html += th('Level', 'text-align: right');
-    html += th('Subsections', 'text-align: right');
-//    html += th('ckElement', 'text-align: right');
-    html += th('Comments', 'padding-left: 0.5em');
+    html += '<thead style="display:table; width:100%; table-layout:fixed;"><tr>';
+    html += th('Headings', 'text-align: left;');
+    html += th('Level', 'text-align: right; padding-right: 1em; width: 4em;', 'Heading Level');
+    html += th('Comments', 'text-align: left');
     html += '</tr></thead>';
 
-    html += '<tbody>';
+    html += '<tbody style="max-height: 200px; display: block; overflow-y: scroll; border: 1px solid #AAAAAA;">';
     for (let index = 0; index < hlist.length; index++) {
       var h = hlist[index];
       var left = (h.level - 1) + 0.25;
-      html += '<tr>';
+
+      if (index % 2) {
+        html += '<tr style="display:table; width:100%; table-layout:fixed;">';
+      }
+      else {
+        html += '<tr style="display:table; width:100%; table-layout:fixed; background-color: #EEEEEE;">';
+      }
+
       html += td(h.name, 'padding-left: ' + left + 'em;');
-      html += td(h.level, 'text-align: right');
-      html += td((h.subsections ? h.subsections : ''), 'text-align: right');
-//      html += td(h.ckElement.getText(), 'text-align: right');
+      html += td(h.level, 'text-align: right; padding-right: 0.25em; width: 4em;');        
       if (h.nestingError) {
-        html += td('Nesting error', 'color: red; padding-left: 0.5em');
+        html += td('Nesting error', 'color: red; padding-left: 1em;');
       } else {
         if (h.subsections === 1) {
-          html += td('Typically more than one subsection', 'color: #CC6600; padding-left: 0.5em');              
+          html += td('Typically more than one subsection', 'color: #CC6600; padding-left: 1em;');              
+        }
+        else {
+          html += td('', '');              
         }
       }
+
       html += '</tr>';
     }
     html += '</tbody>'
@@ -137,6 +153,42 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
 
     return html;
   } // end htmlOutline
+
+
+  function updateNestingErrors(hlist) {
+
+    var errors = 0;
+    var color = 'black';
+    var html = lang.noNestingErrors;
+    var nestingErrors = document.getElementById('nestingErrors');
+    var fixNestingErrors = document.getElementById('fixNestingErrors');
+
+
+    for (let index = 0; index < hlist.length; index++) {
+      if (hlist[index].nestingError) {
+        errors += 1;
+      } 
+    }  
+
+    if (errors > 1) {
+      html = errors + lang.nestingErrors;
+      color = 'red';
+    }
+    else {
+      if (errors === 1) {
+        html = lang.nestingError;
+        color = 'red';
+      }
+    }
+
+    console.log('fixNestingErrors: ' + fixNestingErrors)
+
+    nestingErrors.innerHTML = html;
+    nestingErrors.style.color = color;
+
+    return errors;
+  } // end htmlOutline
+
 
   function htmlOptionsTOC() {
 
@@ -313,11 +365,13 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
 
   function updateDialog(hlist) {
 
-    var outline_banner = document.getElementById('outlineBanner');
-    outline_banner.innerHTML = htmlBanner(lang.outlineBanner);
+    var outlineBanner = document.getElementById('outlineBanner');
+    outlineBanner.innerHTML = htmlBanner(lang.outlineBanner);
 
     var outline = document.getElementById('headingOutlineSelect');
     outline.innerHTML = htmlOutline(hlist);
+
+    updateNestingErrors(hlist);
 
     var toc_banner = document.getElementById('tocBanner');
     toc_banner.innerHTML = htmlBanner(lang.tocBanner);
@@ -338,6 +392,10 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
     title: lang.outlineLabel,
     minWidth: 500,
     minHeight: 300,
+    onLoad: function( event ) {
+      console.log('onload: ' + typeof event.data);
+    },
+
     onShow: function( event ) {
 
       headingList = getHeadingList(myEditor.document.getBody());
@@ -388,18 +446,61 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
         title: 'List of section headings in the document',
         expand: true,
         padding: 1,
-        elements: [{
+        elements: [
+          {  
             type: 'html',
             html: '<div><div id="outlineBanner"></div><ol id="headingOutlineSelect"></ol></div>'
+          },   
+          {
+            type: 'hbox',
+            widths: [ '84%', '20%' ],
+            children: [
+              {
+                type: 'text',
+                id: 'headingText',
+                label: lang.headingTextLabel,
+                setup: function() {
+                  this.enable();
+
+                },
+                commit: function( data ) {
+
+                }
+              },
+              {
+                type: 'select',
+                id: 'headingLevel',
+                label: lang.headingLevelLabel,
+                items: [ [ lang.level_h1 ], [ lang.level_h2 ], [ lang.level_h3 ], [ lang.level_h4 ], [ lang.level_h5 ], [ lang.level_h6 ] ],
+                'default': lang.level_h2,
+                onChange: function( api ) {
+                    // this = CKEDITOR.ui.dialog.select
+                    alert( 'Current value: ' + this.getValue() );
+                }
+              }
+            ]  
           },
           {
             type: 'button',
-            label: lang.labelFixNestingErrors,
+            label: lang.headingUpdateLabel,
+            onClick: function() {
+            }  
+          },
+          {
+            type: 'html',
+            html: '<div><div style="white-space: normal; margin-top: 0em; color: red; font-size: 100%; margin-top: 1.5em;" id="nestingErrors"></div></div>'
+          },
+          {
+            type: 'button',
+            id: 'fixNestingErrors',
+            label: lang.fixNestingErrorsLabel,
+            disabled: true,
             onClick: function() {
               fixHeadingNesting(headingList);
-              updateDialog(headingList)
+              updateDialog(headingList);
+              updateNestingErrors(headingList);
             }
-          }
+          }  
         ],
       },
       {
