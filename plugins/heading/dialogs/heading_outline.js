@@ -8,6 +8,8 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
 
   var myEditor = editor;
 
+
+
   function htmlBanner(content) {
     return '<h2 style="white-space: normal; font-weight: bold; margin-top: 0em; font-size: 135%">' + content + '</h2>';
   }
@@ -160,8 +162,7 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
     var errors = 0;
     var color = 'black';
     var html = lang.noNestingErrors;
-    var nestingErrors = document.getElementById('nestingErrors');
-    var fixNestingErrors = document.getElementById('fixNestingErrors');
+    var nestingErrors  = document.getElementById('nestingErrors');
 
 
     for (let index = 0; index < hlist.length; index++) {
@@ -181,14 +182,44 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
       }
     }
 
-    console.log('fixNestingErrors: ' + fixNestingErrors)
-
     nestingErrors.innerHTML = html;
     nestingErrors.style.color = color;
+
+    nestingErrors.parentNode.parentNode.parentNode.style="background-color: #EEEEEE; border: 1px solid #AAAAAA;";
 
     return errors;
   } // end htmlOutline
 
+  function updateSiblingWarnings(hlist) {
+
+    var warnings = 0;
+    var color = 'black';
+    var html = lang.noSiblingWarnings;
+    var siblingWarning  = document.getElementById('siblingWarning');
+
+
+    for (let index = 0; index < hlist.length; index++) {
+      if (hlist[index].subsections === 1) {
+        warnings += 1;
+      } 
+    }  
+
+    if (warnings > 1) {
+      html = warnings + lang.siblingWarnings;
+      color = '#CC6600';
+    }
+    else {
+      if (warnings === 1) {
+        html = lang.siblingWarning;
+        color = '#CC6600';
+      }
+    }
+
+    siblingWarning.innerHTML = html;
+    siblingWarning.style.color = color;
+
+    return warnings;
+  } // end htmlOutline
 
   function htmlOptionsTOC() {
 
@@ -372,6 +403,7 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
     outline.innerHTML = htmlOutline(hlist);
 
     updateNestingErrors(hlist);
+    updateSiblingWarnings(hlist);
 
     var toc_banner = document.getElementById('tocBanner');
     toc_banner.innerHTML = htmlBanner(lang.tocBanner);
@@ -453,7 +485,7 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
           },   
           {
             type: 'hbox',
-            widths: [ '84%', '20%' ],
+            widths: [ '85%', '15%' ],
             children: [
               {
                 type: 'text',
@@ -471,8 +503,8 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
                 type: 'select',
                 id: 'headingLevel',
                 label: lang.headingLevelLabel,
-                items: [ [ lang.level_h1 ], [ lang.level_h2 ], [ lang.level_h3 ], [ lang.level_h4 ], [ lang.level_h5 ], [ lang.level_h6 ] ],
-                'default': lang.level_h2,
+                items: [ [ '1' ], [ '2' ], [ '3' ], [ '4' ], [ '5' ], [ '6'] ],
+                'default': '2',
                 onChange: function( api ) {
                     // this = CKEDITOR.ui.dialog.select
                     alert( 'Current value: ' + this.getValue() );
@@ -488,19 +520,32 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
           },
           {
             type: 'html',
-            html: '<div><div style="white-space: normal; margin-top: 0em; color: red; font-size: 100%; margin-top: 1.5em;" id="nestingErrors"></div></div>'
+            html: '<div><div style="white-space: normal; font-size: 100%; margin-top: 1.5em;">' + lang.commentsSummary + '</div></div>'
+          },   
+          {
+            type: 'hbox',
+            widths: [ '50%', '50%' ],
+            children: [
+              {
+                type: 'html',
+                html: '<div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.125em; font-size: 100%;" id="nestingErrors"></div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.25em; font-size: 100%;" id="siblingWarning"></div></div>'
+              },
+              {
+                type: 'button',
+                label: lang.fixNestingErrorsLabel,
+                onClick: function() {
+                  fixHeadingNesting(headingList);
+                  updateDialog(headingList);
+                  updateNestingErrors(headingList);
+                  updateSiblingWarnings(headingList);
+                }  
+              }  
+            ]
           },
           {
-            type: 'button',
-            id: 'fixNestingErrors',
-            label: lang.fixNestingErrorsLabel,
-            disabled: true,
-            onClick: function() {
-              fixHeadingNesting(headingList);
-              updateDialog(headingList);
-              updateNestingErrors(headingList);
-            }
-          }  
+            type: 'html',
+            html: '<div><div style="white-space: normal; margin-top: 0em; font-size: 100%; margin-top: 1.5em;"> </div></div>'
+          }    
         ],
       },
       {
