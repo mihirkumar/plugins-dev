@@ -49,7 +49,7 @@ CKEDITOR.plugins.setLang( 'heading', 'en', {
   headingLevelLabel: 'Level',
   headingUpdateLabel: 'Update Heading',
   noNestingErrors: 'No Heading Nesting Errors',
-  nestingError: ' 1 Heading Nesting Error',
+  nestingError: '1 Heading Nesting Error',
   nestingErrors: ' Heading Nesting Errors',
   fixNestingErrorsLabel: 'Fix Nesting Errors',
   includeLevel2: 'Level 2',
