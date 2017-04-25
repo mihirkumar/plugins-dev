@@ -7,12 +7,23 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 <head>
   <meta charset="utf-8">
-  <title>A11yFirst Plugins Demo</title>
+  <title>A11yFirst Plugins Header Nesting Test 1</title>
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <style type="text/css">
     /* all richcombo button labels */
     .cke_combo_text.cke_combo_inlinelabel {
       width: auto;
+    }
+
+    /* heading menubutton with text label */
+    .cke_button.cke_button__heading .cke_button_arrow {
+      margin-left: 10px;
+    }
+    .cke_button_icon.cke_button__heading_icon {
+      display: none;
+    }
+    .cke_button_label.cke_button__heading_label {
+      display: inline;
     }
 
     /* langtest menubutton with text label */
@@ -122,6 +133,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
   <script>
     CKEDITOR.replace('editor', {
       height: 480,
+      skin: 'a11yfirst',
+      startupFocus: true,
       toolbar: [
         { name: 'heading',      items: [ 'Heading' ] },
         { name: 'list',         items: [ 'NumberedList', 'BulletedList', 'Indent', 'Outdent' ] },

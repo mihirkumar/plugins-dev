@@ -513,7 +513,7 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
             ]  
           },
           {
-            type: 'button',
+            type: 'outline',
             label: lang.headingUpdateLabel,
             onClick: function() {
             }  
@@ -531,7 +531,7 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
                 html: '<div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.125em; font-size: 100%;" id="nestingErrors"></div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.25em; font-size: 100%;" id="siblingWarning"></div></div>'
               },
               {
-                type: 'button',
+                type: 'outline',
                 label: lang.fixNestingErrorsLabel,
                 onClick: function() {
                   fixHeadingNesting(headingList);

@@ -570,6 +570,76 @@ CKEDITOR.plugins.add( 'dialogui', {
 			},
 
 			/**
+			 * A button with a label inside.
+			 *
+			 * @class CKEDITOR.ui.dialog.button
+			 * @extends CKEDITOR.ui.dialog.uiElement
+			 * @constructor Creates a button class instance.
+			 * @param {CKEDITOR.dialog} dialog Parent dialog window object.
+			 * @param {CKEDITOR.dialog.definition.uiElement} elementDefinition
+			 * The element definition. Accepted fields:
+			 *
+			 * * `label` (Required) The button label.
+			 * * `disabled` (Optional) Set to `true` if you want the
+			 *     button to appear in the disabled state.
+			 *
+			 * @param {Array} htmlList List of HTML code to output to.
+			 */
+			outline: function( dialog, elementDefinition, htmlList ) {
+				if ( !arguments.length )
+					return;
+
+				if ( typeof elementDefinition == 'function' )
+					elementDefinition = elementDefinition( dialog.getParentEditor() );
+
+				initPrivateObject.call( this, elementDefinition, { disabled: elementDefinition.disabled || false } );
+
+				// Add OnClick event to this input.
+				CKEDITOR.event.implementOn( this );
+
+				var me = this;
+
+				// Register an event handler for processing button clicks.
+				dialog.on( 'load', function() {
+					var element = this.getElement();
+
+					( function() {
+						element.on( 'click', function( evt ) {
+							me.click();
+							// #9958
+							evt.data.preventDefault();
+						} );
+
+						element.on( 'keydown', function( evt ) {
+							if ( evt.data.getKeystroke() in { 32: 1 } ) {
+								me.click();
+								evt.data.preventDefault();
+							}
+						} );
+					} )();
+
+					element.unselectable();
+				}, this );
+
+				var outerDefinition = CKEDITOR.tools.extend( {}, elementDefinition );
+				delete outerDefinition.style;
+
+				var labelId = CKEDITOR.tools.getNextId() + '_label';
+				CKEDITOR.ui.dialog.uiElement.call( this, dialog, outerDefinition, htmlList, 'a', null, {
+					style: elementDefinition.style,
+					href: 'javascript:void(0)', // jshint ignore:line
+					title: elementDefinition.label,
+					hidefocus: 'true',
+					'class': elementDefinition[ 'class' ],
+					role: 'button',
+					'aria-labelledby': labelId
+				}, '<span id="' + labelId + '" class="cke_dialog_ui_button">' +
+											CKEDITOR.tools.htmlEncode( elementDefinition.label ) +
+										'</span>' );
+			},
+
+
+			/**
 			 * A select box.
 			 *
 			 * @class CKEDITOR.ui.dialog.select
@@ -897,6 +967,87 @@ CKEDITOR.plugins.add( 'dialogui', {
 
 		/** @class CKEDITOR.ui.dialog.button */
 		CKEDITOR.ui.dialog.button.prototype = CKEDITOR.tools.extend( new CKEDITOR.ui.dialog.uiElement(), {
+			/**
+			 * Simulates a click to the button.
+			 *
+			 * @returns {Object} Return value of the `click` event.
+			 */
+			click: function() {
+				if ( !this._.disabled )
+					return this.fire( 'click', { dialog: this._.dialog } );
+				return false;
+			},
+
+			/**
+			 * Enables the button.
+			 */
+			enable: function() {
+				this._.disabled = false;
+				var element = this.getElement();
+				element && element.removeClass( 'cke_disabled' );
+			},
+
+			/**
+			 * Disables the button.
+			 */
+			disable: function() {
+				this._.disabled = true;
+				this.getElement().addClass( 'cke_disabled' );
+			},
+
+			/**
+			 * Checks whether a field is visible.
+			 *
+			 * @returns {Boolean}
+			 */
+			isVisible: function() {
+				return this.getElement().getFirst().isVisible();
+			},
+
+			/**
+			 * Checks whether a field is enabled. Fields can be disabled by using the
+			 * {@link #disable} method and enabled by using the {@link #enable} method.
+			 *
+			 * @returns {Boolean}
+			 */
+			isEnabled: function() {
+				return !this._.disabled;
+			},
+
+			/**
+			 * Defines the `onChange` event and `onClick` for button element definitions.
+			 *
+			 * @property {Object}
+			 */
+			eventProcessors: CKEDITOR.tools.extend( {}, CKEDITOR.ui.dialog.uiElement.prototype.eventProcessors, {
+				onClick: function( dialog, func ) {
+					this.on( 'click', function() {
+						func.apply( this, arguments );
+					} );
+				}
+			}, true ),
+
+			/**
+			 * Handler for the element's access key up event. Simulates a click to
+			 * the button.
+			 */
+			accessKeyUp: function() {
+				this.click();
+			},
+
+			/**
+			 * Handler for the element's access key down event. Simulates a mouse
+			 * down to the button.
+			 */
+			accessKeyDown: function() {
+				this.focus();
+			},
+
+			keyboardFocusable: true
+		}, true );
+
+		/** @class CKEDITOR.ui.dialog.outline */
+		CKEDITOR.ui.dialog.outline.prototype = CKEDITOR.tools.extend( new CKEDITOR.ui.dialog.uiElement(), {
 			/**
 			 * Simulates a click to the button.
 			 *
@@ -1505,6 +1656,7 @@ CKEDITOR.plugins.add( 'dialogui', {
 		CKEDITOR.dialog.addUIElement( 'checkbox', commonBuilder );
 		CKEDITOR.dialog.addUIElement( 'radio', commonBuilder );
 		CKEDITOR.dialog.addUIElement( 'button', commonBuilder );
+		CKEDITOR.dialog.addUIElement( 'outline', commonBuilder );
 		CKEDITOR.dialog.addUIElement( 'select', commonBuilder );
 		CKEDITOR.dialog.addUIElement( 'file', commonBuilder );
 		CKEDITOR.dialog.addUIElement( 'fileButton', commonBuilder );
