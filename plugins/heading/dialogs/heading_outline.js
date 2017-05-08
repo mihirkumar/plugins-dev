@@ -408,9 +408,6 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
     var toc_banner = document.getElementById('tocBanner');
     toc_banner.innerHTML = htmlBanner(lang.tocBanner);
 
-    var toc_options = document.getElementById('tocOptions');
-    toc_options.innerHTML = htmlOptionsTOC();
-
     var toc_preview = document.getElementById('tocPreview');
     toc_preview.innerHTML = htmlPreviewTOC(hlist, 3);
 
@@ -527,10 +524,6 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
             widths: [ '50%', '50%' ],
             children: [
               {
-                type: 'html',
-                html: '<div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.125em; font-size: 100%;" id="nestingErrors"></div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.25em; font-size: 100%;" id="siblingWarning"></div></div>'
-              },
-              {
                 type: 'outline',
                 label: lang.fixNestingErrorsLabel,
                 onClick: function() {
@@ -539,7 +532,11 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
                   updateNestingErrors(headingList);
                   updateSiblingWarnings(headingList);
                 }  
-              }  
+              },  
+              {
+                type: 'html',
+                html: '<div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.125em; font-size: 100%;" id="nestingErrors"></div><div style="white-space: normal; padding-left: 0.25em; padding-top: 0.125em; padding-bottom: 0.25em; font-size: 100%;" id="siblingWarning"></div></div>'
+              }
             ]
           },
           {
@@ -559,18 +556,20 @@ CKEDITOR.dialog.add( 'headingOutline', function( editor ) {
             html: '<div><div id="tocBanner"></div></div>'
           },
           {
-            type: 'hbox',
-            widths: [ '30%', '70%' ],
-            children: [
-              {
-                type: 'html',
-                html: '<div><div id="tocOptions" style="border: gray 1px dashed"></div></div>'
-              },
-              {
-                type: 'html',
-                html: '<div><div id="tocPreview" style="border: gray 1px dashed"></div></div>'
-              }
-            ]
+            type: 'html',
+            html: '<div><div id="tocPreview" style="border: gray 1px dashed"></div></div>'
+          },
+          {
+            type: 'radio',
+            id: 'toc_level',
+            label: 'Include heading levels',
+            items: [ [ 'Level 3', '3' ], [ 'Level 4', '4' ], [ 'Level 5', '5' ], [ 'Level 6', '6' ] ],
+            style: '',
+            'default': '3',
+            onClick: function() {
+                // this = CKEDITOR.ui.dialog.radio
+                alert( 'Current value: ' + this.getValue() );
+            }
           }
         ]
       }
