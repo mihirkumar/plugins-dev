@@ -69,4 +69,35 @@ CKEDITOR.plugins.add( 'blockformat', {
 
   } // END init
 
+  var blockSnippets = {},
+    loadedBlockSnippetsFiles = {};
+
+  CKEDITOR.addBlockSnippets = function( name, definition ) {
+    blockSnippets[ name ] = definition;
+  };
+
+  CKEDITOR.getBlockSnippets = function( name ) {
+    return blockSnippets[ name ];
+  };
+
+  CKEDITOR.loadBlockSnippets = function( blockSnippetsFiles, callback ) {
+    // Holds the templates files to be loaded.
+    var toLoad = [];
+
+    // Look for pending template files to get loaded.
+    for ( var i = 0, count = blockSnippetsFiles.length; i < count; i++ ) {
+      if ( !loadedBlockSnippetsFiles[ blockSnippetsFiles[ i ] ] ) {
+        toLoad.push( blockSnippetsFiles[ i ] );
+        loadedBlockSnippetsFiles[ blockSnippetsFiles[ i ] ] = 1;
+      }
+    }
+
+    if ( toLoad.length )
+      CKEDITOR.scriptLoader.load( toLoad, callback );
+    else
+      setTimeout( callback, 0 );
+  };
+
 } );
+
+
