@@ -4,6 +4,7 @@
  */
 
 CKEDITOR.plugins.add( 'a11yfirst', {
+  lang: 'en,en-au,en-ca,en-gb', 
   init: function ( editor ) {
     // Pull request: Add template and method in plugins/listblock/plugin.js
     var listSeparator = CKEDITOR.addTemplate( 'panel-list-separator',

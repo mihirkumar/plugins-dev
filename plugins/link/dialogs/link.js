@@ -120,6 +120,23 @@
 					type: 'text',
 					id: 'linkDisplayText',
 					label: linkLang.displayText,
+					validate: function() {
+
+						var displayText = this.getValue();
+
+						if (!displayText.length) {
+							return !confirm(editor.lang.a11yfirst.msgEmptyLinkDisplayText);
+						}
+
+						var poorDisplayText = editor.lang.a11yfirst.poorLinkDisplayText;
+
+						for (var i = 0; i < poorDisplayText.length; i++) {
+							if (displayText === poorDisplayText[i]) {
+								var msg = editor.lang.a11yfirst.msgPoorLinkDisplayText.replace('%s', displayText);
+								return !confirm(msg);
+							}
+						}
+					},
 					setup: function() {
 						this.enable();
 
