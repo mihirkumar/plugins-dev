@@ -124,8 +124,13 @@
 
 						var displayText = this.getValue();
 
+						displayText = displayText.replace(/^\s+|\s+$/g, "");
+
+						this.setValue(displayText);
+
 						if (!displayText.length) {
-							return !confirm(editor.lang.a11yfirst.msgEmptyLinkDisplayText);
+//							return editor.execCommand( 'emptyLinkDisplayTextCmd' );
+							return editor.execCommand( 'emptyLinkDisplayText' );
 						}
 
 						var poorDisplayText = editor.lang.a11yfirst.poorLinkDisplayText;

@@ -20,6 +20,11 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     CKEDITOR.ui.richCombo.prototype.addSeparator = function () {
       this._.list.addSeparator();
     };
+
+    var emptyLinkDisplayTextCmd = 'emptyLinkDisplayText';
+    CKEDITOR.dialog.add( emptyLinkDisplayTextCmd, this.path + 'dialog/link_empty_display_text.js' );
+    editor.addCommand( emptyLinkDisplayTextCmd, new CKEDITOR.dialogCommand( emptyLinkDisplayTextCmd ) );
+
   },
 
   overrideButtonSetState: function () {
