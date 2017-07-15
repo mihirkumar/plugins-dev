@@ -10,6 +10,13 @@ CKEDITOR.dialog.add( 'emptyLinkDisplayText', function( editor ) {
     title: lang.dialogTitleLinkEmptyDisplayText,
     minWidth: 500,
     minHeight: 300,
+    onShow: function (event) {
+      console.log('onShow: ' + event.data);
+      this.data = event.data;
+    },
+    onOK: function() {
+      console.log('onOK: ' + this.data);
+    },
     contents: [
       {
         id : 'general',

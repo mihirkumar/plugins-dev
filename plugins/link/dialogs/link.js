@@ -129,8 +129,8 @@
 						this.setValue(displayText);
 
 						if (!displayText.length) {
-//							return editor.execCommand( 'emptyLinkDisplayTextCmd' );
-							return editor.execCommand( 'emptyLinkDisplayText' );
+							editor.execCommand( 'emptyLinkDisplayText', 'Test' );
+							return false;
 						}
 
 						var poorDisplayText = editor.lang.a11yfirst.poorLinkDisplayText;
