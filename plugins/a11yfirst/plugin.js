@@ -6,6 +6,7 @@
 CKEDITOR.plugins.add( 'a11yfirst', {
   lang: 'en,en-au,en-ca,en-gb', 
   init: function ( editor ) {
+
     // Pull request: Add template and method in plugins/listblock/plugin.js
     var listSeparator = CKEDITOR.addTemplate( 'panel-list-separator',
       '<div id="{id}" role="separator" style="border-bottom: 1px solid #d1d1d1"></div>' );
@@ -24,6 +25,16 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     var emptyLinkDisplayTextCmd = 'emptyLinkDisplayText';
     CKEDITOR.dialog.add( emptyLinkDisplayTextCmd, this.path + 'dialog/link_empty_display_text.js' );
     editor.addCommand( emptyLinkDisplayTextCmd, new CKEDITOR.dialogCommand( emptyLinkDisplayTextCmd ) );
+
+    var badLinkDisplayTextCmd = 'badLinkDisplayText';
+    CKEDITOR.dialog.add( badLinkDisplayTextCmd, this.path + 'dialog/link_bad_display_text.js' );
+    editor.addCommand( badLinkDisplayTextCmd, new CKEDITOR.dialogCommand( badLinkDisplayTextCmd ) );
+
+    // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation
+    // If the editor.a11yfirst namespace isn't defined, define one
+    if (!editor.a11yfirst) {
+      editor.a11yfirst = {};
+    }
 
   },
 

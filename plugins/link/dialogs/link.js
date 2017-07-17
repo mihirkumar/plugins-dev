@@ -128,19 +128,38 @@
 
 						this.setValue(displayText);
 
+						editor.a11yfirst.linkDisplayText = this;
+						editor.a11yfirst.linkDisplayUrl = this.getDialog().getContentElement( 'info', 'url' ).getValue();
+						editor.a11yfirst.linkDialog = this.getDialog();
+
 						if (!displayText.length) {
-							editor.execCommand( 'emptyLinkDisplayText', 'Test' );
-							return false;
-						}
-
-						var poorDisplayText = editor.lang.a11yfirst.poorLinkDisplayText;
-
-						for (var i = 0; i < poorDisplayText.length; i++) {
-							if (displayText === poorDisplayText[i]) {
-								var msg = editor.lang.a11yfirst.msgPoorLinkDisplayText.replace('%s', displayText);
-								return !confirm(msg);
+							if (editor.a11yfirst.lastEmptyLinkDisplayTextValue !== 'useUrlAsDisplayText'){
+								editor.execCommand('emptyLinkDisplayText');
+								return false;
+							}	
+							else {
+								editor.a11yfirst.lastEmptyLinkDisplayTextValue = undefined;
 							}
 						}
+
+						var badDisplayText = editor.lang.a11yfirst.badLinkDisplayText;
+						
+
+						if (editor.a11yfirst.lastBadLinkDisplayTextValue !== 'useCurrentDisplayText'){
+							console.log("going for bad words");
+							for (var i = 0; i < badDisplayText.length; i++) {
+
+								if (displayText === badDisplayText[i]) {
+									editor.execCommand('badLinkDisplayText');
+									return false;
+								}
+							}
+						}
+						else {
+							editor.a11yfirst.lastBadLinkDisplayTextValue = undefined;
+						}
+						
+						return true;
 					},
 					setup: function() {
 						this.enable();
