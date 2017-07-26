@@ -30,6 +30,18 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     CKEDITOR.dialog.add( badLinkDisplayTextCmd, this.path + 'dialog/link_bad_display_text.js' );
     editor.addCommand( badLinkDisplayTextCmd, new CKEDITOR.dialogCommand( badLinkDisplayTextCmd ) );
 
+    var emptyAltTextCmd = 'emptyAltText';
+    CKEDITOR.dialog.add( emptyAltTextCmd, this.path + 'dialog/image_empty_alt_text.js' );
+    editor.addCommand( emptyAltTextCmd, new CKEDITOR.dialogCommand( emptyAltTextCmd ) );
+
+    var longAltTextCmd = 'longAltText';
+    CKEDITOR.dialog.add( longAltTextCmd, this.path + 'dialog/image_long_alt_text.js' );
+    editor.addCommand( longAltTextCmd, new CKEDITOR.dialogCommand( longAltTextCmd ) );
+
+    var badAltTextCmd = 'badAltText';
+    CKEDITOR.dialog.add( badAltTextCmd, this.path + 'dialog/image_bad_alt_text.js' );
+    editor.addCommand( badAltTextCmd, new CKEDITOR.dialogCommand( badAltTextCmd ) );
+
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation
     // If the editor.a11yfirst namespace isn't defined, define one
     if (!editor.a11yfirst) {

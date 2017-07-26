@@ -576,6 +576,53 @@
 						label: editor.lang.image.alt,
 						accessKey: 'T',
 						'default': '',
+						validate: function() {
+
+							var altText = this.getValue();
+
+							editor.a11yfirst.imageAltText = this;
+							editor.a11yfirst.imageDialog = this.getDialog();
+
+							if (!altText.length) {
+								if (editor.a11yfirst.lastEmptyImageAltTextValue !== 'useEmptyAltText'){
+									editor.execCommand('emptyAltText');
+									return false;
+								}
+
+								else {
+								editor.a11yfirst.lastEmptyImageAltTextValue = undefined;
+								}
+							}
+
+							if (altText.length > 100) {
+								if (editor.a11yfirst.lastLongImageAltTextValue !== 'useLongAltText'){
+									editor.execCommand('longAltText');
+									return false;
+								}
+
+								else {
+								editor.a11yfirst.lastLongImageAltTextValue = undefined;
+								}
+							}
+
+							var badAltText = editor.lang.a11yfirst.badImageAltText;
+						
+							if (editor.a11yfirst.lastBadImageAltTextValue !== 'useBadAltText'){
+								
+								for (var i = 0; i < badAltText.length; i++) {
+
+									if (altText.toLowerCase().endsWith(badAltText[i])) {
+										editor.execCommand('badAltText');
+										return false;
+									}
+								}
+							}
+							else {
+								editor.a11yfirst.lastBadImageAltTextValue = undefined;
+							}
+
+							return true;
+						},
 						onChange: function() {
 							updatePreview( this.getDialog() );
 						},

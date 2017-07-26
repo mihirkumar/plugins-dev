@@ -122,7 +122,7 @@
 					label: linkLang.displayText,
 					validate: function() {
 
-						var displayText = this.getValue();
+						var displayText = this.getValue().toLowerCase();
 
 						displayText = displayText.replace(/^\s+|\s+$/g, "");
 
