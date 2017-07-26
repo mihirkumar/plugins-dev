@@ -42,7 +42,7 @@ CKEDITOR.dialog.add( 'badAltText', function( editor, data) {
           {
             type: 'radio',
             id: 'radioButtonSelection',
-            items: [ [ lang.labelCorrectAltText, 'correctAltText' ], [ lang.labelUseBadAltText, 'useLongAltText' ] ],
+            items: [ [ lang.labelCorrectAltText, 'correctAltText' ], [ lang.labelUseBadAltText, 'useBadAltText' ] ],
             'default': 'correctAltText'
           }
         ]
