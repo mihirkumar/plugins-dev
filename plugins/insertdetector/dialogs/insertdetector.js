@@ -21,10 +21,6 @@ CKEDITOR.dialog.add( 'insertdetectorDialog', function( editor ) {
 
             var enteredHtml = dialog.getValueOf('tab-basic', 'rawHtml');
 
-            editor.on('afterInsertHtml', function() { 
-                console.log("afterInsertHtml was fired");
-            });
-
             editor.insertHtml( '<p>' + enteredHtml + '</p>' );
         }
     };

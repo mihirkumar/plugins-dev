@@ -41,5 +41,10 @@ CKEDITOR.plugins.setLang( 'a11yfirst', 'en', {
 
 	labelCorrectAltText: 'Correct alternative text.',
 
-	labelUseBadAltText: 'Use bad alternative text.'
+	labelUseBadAltText: 'Use bad alternative text.',
+
+	msgInsertImageWarning: 'Insert image warning message.',
+
+	msgInsertImageVerify: 'Verify the alt text.'
+
 } );

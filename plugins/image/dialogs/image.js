@@ -583,42 +583,64 @@
 							editor.a11yfirst.imageAltText = this;
 							editor.a11yfirst.imageDialog = this.getDialog();
 
-							if (!altText.length) {
-								if (editor.a11yfirst.lastEmptyImageAltTextValue !== 'useEmptyAltText'){
-									editor.execCommand('emptyAltText');
-									return false;
-								}
+							// if (!altText.length) {
+							// 	if (editor.a11yfirst.lastEmptyImageAltTextValue !== 'useEmptyAltText'){
+							// 		editor.execCommand('emptyAltText');
+							// 		return false;
+							// 	}
 
-								else {
-								editor.a11yfirst.lastEmptyImageAltTextValue = undefined;
-								}
-							}
+							// 	else {
+							// 	editor.a11yfirst.lastEmptyImageAltTextValue = undefined;
+							// 	}
+							// }
 
-							if (altText.length > 100) {
-								if (editor.a11yfirst.lastLongImageAltTextValue !== 'useLongAltText'){
-									editor.execCommand('longAltText');
-									return false;
-								}
+							// if (altText.length > 100) {
+							// 	if (editor.a11yfirst.lastLongImageAltTextValue !== 'useLongAltText'){
+							// 		editor.execCommand('longAltText');
+							// 		return false;
+							// 	}
 
-								else {
-								editor.a11yfirst.lastLongImageAltTextValue = undefined;
-								}
+							// 	else {
+							// 	editor.a11yfirst.lastLongImageAltTextValue = undefined;
+							// 	}
+							// }
+
+							// var badAltText = editor.lang.a11yfirst.badImageAltText;
+						
+							// if (editor.a11yfirst.lastBadImageAltTextValue !== 'useBadAltText'){
+								
+							// 	for (var i = 0; i < badAltText.length; i++) {
+
+							// 		if (altText.toLowerCase().endsWith(badAltText[i])) {
+							// 			editor.execCommand('badAltText');
+							// 			return false;
+							// 		}
+							// 	}
+							// }
+							// else {
+							// 	editor.a11yfirst.lastBadImageAltTextValue = undefined;
+							// }
+
+							var flag = false;
+							var hasBeenWarned = false;
+
+							if (!altText.length || altText.length > 100) {
+								flag = true;
 							}
 
 							var badAltText = editor.lang.a11yfirst.badImageAltText;
 						
-							if (editor.a11yfirst.lastBadImageAltTextValue !== 'useBadAltText'){
-								
-								for (var i = 0; i < badAltText.length; i++) {
+							for (var i = 0; i < badAltText.length; i++) {
 
-									if (altText.toLowerCase().endsWith(badAltText[i])) {
-										editor.execCommand('badAltText');
-										return false;
-									}
+								if (altText.toLowerCase().endsWith(badAltText[i])) {
+									flag = true;
 								}
 							}
-							else {
-								editor.a11yfirst.lastBadImageAltTextValue = undefined;
+
+							if (flag && !hasBeenWarned) {
+								editor.execCommand('altTextWarning');
+								hasBeenWarned = true;
+								return false;
 							}
 
 							return true;

@@ -42,6 +42,18 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     CKEDITOR.dialog.add( badAltTextCmd, this.path + 'dialog/image_bad_alt_text.js' );
     editor.addCommand( badAltTextCmd, new CKEDITOR.dialogCommand( badAltTextCmd ) );
 
+    var altTextWarningCmd = 'altTextWarning';
+    CKEDITOR.dialog.add( altTextWarningCmd, this.path + 'dialog/inserted_image_warning.js' );
+    editor.addCommand( altTextWarningCmd, new CKEDITOR.dialogCommand( altTextWarningCmd ) );
+
+    var altTextVerifyCmd = 'altTextVerify';
+    CKEDITOR.dialog.add( altTextVerifyCmd, this.path + 'dialog/inserted_image_verify.js' );
+    editor.addCommand( altTextVerifyCmd, new CKEDITOR.dialogCommand( altTextVerifyCmd ) );
+
+    editor.on('afterInsertHtml', function() { 
+      console.log("afterInsertHtml was fired");
+    });
+
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation
     // If the editor.a11yfirst namespace isn't defined, define one
     if (!editor.a11yfirst) {
