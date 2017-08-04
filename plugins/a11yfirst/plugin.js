@@ -4,7 +4,7 @@
  */
 
 CKEDITOR.plugins.add( 'a11yfirst', {
-  lang: 'en,en-au,en-ca,en-gb', 
+  lang: 'en,en-au,en-ca,en-gb',
   init: function ( editor ) {
 
     // Pull request: Add template and method in plugins/listblock/plugin.js
@@ -50,8 +50,12 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     CKEDITOR.dialog.add( altTextVerifyCmd, this.path + 'dialog/inserted_image_verify.js' );
     editor.addCommand( altTextVerifyCmd, new CKEDITOR.dialogCommand( altTextVerifyCmd ) );
 
-    editor.on('afterInsertHtml', function() { 
-      console.log("afterInsertHtml was fired");
+    editor.on('insertElement', function() {
+      var items = document.getElementsByTagName("img");
+
+      console.log(items.length);
+
+      // items.id = 1;
     });
 
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation
