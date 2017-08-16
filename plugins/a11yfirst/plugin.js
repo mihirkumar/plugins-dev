@@ -50,10 +50,26 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     CKEDITOR.dialog.add( altTextVerifyCmd, this.path + 'dialog/inserted_image_verify.js' );
     editor.addCommand( altTextVerifyCmd, new CKEDITOR.dialogCommand( altTextVerifyCmd ) );
 
-    editor.on('insertElement', function() {
-      var items = document.getElementsByTagName("img");
+    editor.on('insertElement', function(event) {
+      var imageData = event.data;
+      var altText = imageData.getAttribute("alt");
+      var lang = editor.lang.a11yfirst;
+      
 
-      console.log(items.length);
+      if (altText === null) {
+        // command for no alt text
+      }
+
+      else if (altText === "") {
+        // command for empty alt text
+      }
+
+      else if (altText === )
+
+      
+      console.log(imageData.getAttribute("xyz"));
+
+      // console.log(editor.getSelection());
 
       // items.id = 1;
     });
