@@ -19,11 +19,11 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
         CKEDITOR.dialog.getCurrent().hide();
         editor.a11yfirst.imageDialog.click('ok');
       }
-      
+
       else {
         editor.a11yfirst.imageAltText.focus();
       }
-      
+
     },
     onShow: function(){
       var newMsg = lang.msgLongImageAltText;
@@ -42,11 +42,15 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
           {
             type: 'radio',
             id: 'radioButtonSelection',
-            items: [ [ lang.labelShortenAltText, 'shortenAltText' ], [ lang.labelUseLongAltText, 'useLongAltText' ] ],
-            'default': 'shortenAltText'
+            items: [ [ lang.labelShortenAltText, 'shortenAltText' ], [ lang.labelUseLongAltText, 'useLongAltText' ], [lang.labelVerifyLongAltText, 'verifyLongAltText'] ],
+            'default': 'useLongAltText'
+          },
+          {
+            type: 'text',
+            id: 'newAltText'
           }
         ]
-      }   
+      }
     ],
   };
 } );

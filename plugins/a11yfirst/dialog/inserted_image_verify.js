@@ -37,13 +37,19 @@ CKEDITOR.dialog.add( 'altTextVerify', function( editor, data) {
             type : 'html',
             html : '<div id="message"></div>'
           },
-          { 
+          {
+            type: 'radio',
+            id: 'radioButtonSelection',
+            items: [ [ lang.labelDecorativeImageWarning, 'useBadAltText' ], [ lang.labelInformativeImageWarning, 'correctAltText' ] ],
+            'default': 'correctAltText'
+          },
+          {
             id: 'verifyAltTextField',
             label: 'Alt text',
             type: 'text'
           }
         ]
-      }   
+      }
     ],
   };
 } );

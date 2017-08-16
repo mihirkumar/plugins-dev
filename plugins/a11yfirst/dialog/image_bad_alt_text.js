@@ -19,11 +19,11 @@ CKEDITOR.dialog.add( 'badAltText', function( editor, data) {
         CKEDITOR.dialog.getCurrent().hide();
         editor.a11yfirst.imageDialog.click('ok');
       }
-      
+
       else {
         editor.a11yfirst.imageAltText.focus();
       }
-      
+
     },
     onShow: function(){
       var newMsg = lang.msgBadImageAltText;
@@ -42,11 +42,15 @@ CKEDITOR.dialog.add( 'badAltText', function( editor, data) {
           {
             type: 'radio',
             id: 'radioButtonSelection',
-            items: [ [ lang.labelCorrectAltText, 'correctAltText' ], [ lang.labelUseBadAltText, 'useBadAltText' ] ],
+            items: [ [ lang.labelDecorativeImageWarning, 'useBadAltText' ], [ lang.labelInformativeImageWarning, 'correctAltText' ] ],
             'default': 'correctAltText'
+          },
+          {
+            type: 'text',
+            id: 'newAltText'
           }
         ]
-      }   
+      }
     ],
   };
 } );

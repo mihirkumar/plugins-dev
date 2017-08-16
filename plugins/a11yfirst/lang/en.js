@@ -7,6 +7,10 @@ CKEDITOR.plugins.setLang( 'a11yfirst', 'en', {
 
 	dialogTitleImageAltText: 'Image: Warning',
 
+	labelDecorativeImageWarning: 'Image is decorative and does not need a text description.',
+
+	labelInformativeImageWarning: 'Image is informative and needs a text description.',
+
 	msgEmptyLinkDisplayText: 'The Display Text input field for the link is empty.',
 
 	labelAddText: 'Add text to input field',
@@ -29,15 +33,17 @@ CKEDITOR.plugins.setLang( 'a11yfirst', 'en', {
 
 	labelUseEmptyAltText: 'Ignore warning, use empty alternative text.',
 
-	msgEmptyImageAltText: 'Do you want to keep the alt text empty?',
+	msgEmptyImageAltText: ' Verify that this image is used purely for decorative purposes. If the image does convey information to the user, select the informative image option and add a text description.',
 
-	msgLongImageAltText: 'The alt text is very long. What would you like to do?',
+	msgLongImageAltText: ' Typically an image should be described in less than 100 characters, but there are some cases where 100 characters may not be enough to describe the image. Choose between these options:',
 
-	msgBadImageAltText: 'The alt text looks like a file extension. What would you like to do?',
+	msgBadImageAltText: 'The ALT text of an image should not contain a filename, edit the ALT text to provide a text describe of the image.',
 
-	labelShortenAltText: 'Shorten alternative text.',
+	labelShortenAltText: 'The image does not need more than 100 characters for the text description and edit the text description to be less than 100 characters.',
 
-	labelUseLongAltText: 'Use long alternative text.',
+	labelUseLongAltText: 'Include the longer text description in the content of the page to make it available to all users and edit the text description to provide orientation to the content the image contains and reference the relative location of where the longer text description can be found (e.g longer description after the image).',
+
+	labelVerifyLongAltText: 'Verify that this image needs a text description longer than 100 characters.',
 
 	labelCorrectAltText: 'Correct alternative text.',
 
@@ -45,6 +51,6 @@ CKEDITOR.plugins.setLang( 'a11yfirst', 'en', {
 
 	msgInsertImageWarning: 'Insert image warning message.',
 
-	msgInsertImageVerify: 'Verify the alt text.'
+	msgInsertImageVerify: 'Verify that the ALT text accurately describes the image.'
 
 } );

@@ -54,24 +54,46 @@ CKEDITOR.plugins.add( 'a11yfirst', {
       var imageData = event.data;
       var altText = imageData.getAttribute("alt");
       var lang = editor.lang.a11yfirst;
-      
+      var flag = false;
 
       if (altText === null) {
         // command for no alt text
+        flag = true;
       }
 
       else if (altText === "") {
         // command for empty alt text
+        editor.execCommand('emptyAltText');
+        if (editor.a11yfirst.lastEmptyImageAltTextValue === 'addAltText') {
+          imageData.setAttribute("alt", editor.a11yfirst.newAltTextValue);
+        }
+        console.log(imageData.getAttribute("alt"));
+        flag = true;
       }
 
-      else if (altText === )
+      else if (altText.length > 100 ) {
+        editor.execCommand('longAltText');
+        flag = true;
+      }
 
-      
-      console.log(imageData.getAttribute("xyz"));
+      var badAltText = editor.lang.a11yfirst.badImageAltText;
 
-      // console.log(editor.getSelection());
+      if (editor.a11yfirst.lastBadImageAltTextValue !== 'useBadAltText'){
 
-      // items.id = 1;
+        for (var i = 0; i < badAltText.length; i++) {
+
+          if (altText.toLowerCase().endsWith(badAltText[i])) {
+            editor.execCommand('badAltText');
+            flag = true;
+            // return false;
+          }
+        }
+      }
+      else {
+        editor.a11yfirst.lastBadImageAltTextValue = undefined;
+      }
+
+      // console.log(imageData.getAttribute("xyz"));
     });
 
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation

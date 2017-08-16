@@ -12,18 +12,23 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
     minHeight: 300,
     onOk: function(){
 
+      // editor.a11yfirst.lastEmptyImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
+
+      //if (editor.a11yfirst.lastEmptyImageAltTextValue === 'useEmptyAltText'){
+        // fire ok
+      CKEDITOR.dialog.getCurrent().hide();
+
       editor.a11yfirst.lastEmptyImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
 
-      if (editor.a11yfirst.lastEmptyImageAltTextValue === 'useEmptyAltText'){
-        // fire ok
-        CKEDITOR.dialog.getCurrent().hide();
-        editor.a11yfirst.imageDialog.click('ok');
-      }
-      
-      else {
-        editor.a11yfirst.imageAltText.focus();
-      }
-      
+      editor.a11yfirst.newAltTextValue = this.getValueOf('general', 'newAltText');
+
+      // editor.a11yfirst.imageDialog.click('ok');
+      //}
+
+      // else {
+      //   editor.a11yfirst.imageAltText.focus();
+      // }
+
     },
     onShow: function(){
       var newMsg = lang.msgEmptyImageAltText;
@@ -42,11 +47,15 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
           {
             type: 'radio',
             id: 'radioButtonSelection',
-            items: [ [ lang.labelAddAltText, 'addAltText' ], [ lang.labelUseEmptyAltText, 'useEmptyAltText' ] ],
-            'default': 'addAltText'
+            items: [ [ lang.labelDecorativeImageWarning, 'useEmptyAltText' ], [ lang.labelInformativeImageWarning, 'addAltText' ] ],
+            'default': 'useEmptyAltText'
+          },
+          {
+            type: 'text',
+            id: 'newAltText'
           }
         ]
-      }   
+      }
     ],
   };
 } );
