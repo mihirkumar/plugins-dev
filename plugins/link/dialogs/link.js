@@ -136,17 +136,17 @@
 							if (editor.a11yfirst.lastEmptyLinkDisplayTextValue !== 'useUrlAsDisplayText'){
 								editor.execCommand('emptyLinkDisplayText');
 								return false;
-							}	
+							}
 							else {
 								editor.a11yfirst.lastEmptyLinkDisplayTextValue = undefined;
 							}
 						}
 
 						var badDisplayText = editor.lang.a11yfirst.badLinkDisplayText;
-						
+
 
 						if (editor.a11yfirst.lastBadLinkDisplayTextValue !== 'useCurrentDisplayText'){
-							console.log("going for bad words");
+
 							for (var i = 0; i < badDisplayText.length; i++) {
 
 								if (displayText === badDisplayText[i]) {
@@ -158,7 +158,7 @@
 						else {
 							editor.a11yfirst.lastBadLinkDisplayTextValue = undefined;
 						}
-						
+
 						return true;
 					},
 					setup: function() {

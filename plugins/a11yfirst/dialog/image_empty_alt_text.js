@@ -20,7 +20,7 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
 
       editor.a11yfirst.lastEmptyImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
 
-      editor.a11yfirst.newAltTextValue = this.getValueOf('general', 'newAltText');
+      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
 
       // editor.a11yfirst.imageDialog.click('ok');
       //}
@@ -33,6 +33,21 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
     onShow: function(){
       var newMsg = lang.msgEmptyImageAltText;
       document.getElementById('message').innerHTML = newMsg;
+    },
+    onLoad: function() {
+      var radioButton = this.getContentElement('general', 'radioButtonSelection');
+      var newAltText =   this.getContentElement('general', 'newAltText');
+
+      // newAltText.disable();
+      console.log(radioButton);
+
+      radioButton.on('isChanged', function(){
+        console.log('hey');
+        console.log(this.getValueOf('general', 'radioButtonSelection'));
+        if (newAltText.getValue() === 'addAltText') {
+          newAltText.enable();
+        }
+      });
     },
     contents: [
       {

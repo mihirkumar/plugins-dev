@@ -51,8 +51,8 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     editor.addCommand( altTextVerifyCmd, new CKEDITOR.dialogCommand( altTextVerifyCmd ) );
 
     editor.on('insertElement', function(event) {
-      var imageData = event.data;
-      var altText = imageData.getAttribute("alt");
+      editor.a11yfirst.imageData = event.data;
+      var altText = editor.a11yfirst.imageData.getAttribute("alt");
       var lang = editor.lang.a11yfirst;
       var flag = false;
 
@@ -65,9 +65,8 @@ CKEDITOR.plugins.add( 'a11yfirst', {
         // command for empty alt text
         editor.execCommand('emptyAltText');
         if (editor.a11yfirst.lastEmptyImageAltTextValue === 'addAltText') {
-          imageData.setAttribute("alt", editor.a11yfirst.newAltTextValue);
+          editor.a11yfirst.imageData.setAttribute("alt", editor.a11yfirst.newAltTextValue);
         }
-        console.log(imageData.getAttribute("alt"));
         flag = true;
       }
 
@@ -93,7 +92,7 @@ CKEDITOR.plugins.add( 'a11yfirst', {
         editor.a11yfirst.lastBadImageAltTextValue = undefined;
       }
 
-      // console.log(imageData.getAttribute("xyz"));
+      // console.log(editor.a11yfirst.imageData.getAttribute("xyz"));
     });
 
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation

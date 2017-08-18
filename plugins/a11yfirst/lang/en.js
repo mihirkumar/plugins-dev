@@ -33,7 +33,7 @@ CKEDITOR.plugins.setLang( 'a11yfirst', 'en', {
 
 	labelUseEmptyAltText: 'Ignore warning, use empty alternative text.',
 
-	msgEmptyImageAltText: ' Verify that this image is used purely for decorative purposes. If the image does convey information to the user, select the informative image option and add a text description.',
+	msgEmptyImageAltText: ' Verify that this image is used purely for decorative purposes. <br> If the image does convey information to the user, select the informative image option and add a text description.',
 
 	msgLongImageAltText: ' Typically an image should be described in less than 100 characters, but there are some cases where 100 characters may not be enough to describe the image. Choose between these options:',
 
