@@ -11,23 +11,58 @@ CKEDITOR.dialog.add( 'badAltText', function( editor, data) {
     minWidth: 500,
     minHeight: 300,
     onOk: function(){
+      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
 
-      editor.a11yfirst.lastBadImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
+      var radioButton = this.getContentElement('general', 'radioButtonSelection');
 
-      if (editor.a11yfirst.lastBadImageAltTextValue === 'useBadAltText'){
-        // fire ok
-        CKEDITOR.dialog.getCurrent().hide();
-        editor.a11yfirst.imageDialog.click('ok');
-      }
+      radioButton.removeAllListeners();
 
-      else {
-        editor.a11yfirst.imageAltText.focus();
-      }
+      // editor.a11yfirst.lastBadImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
+      //
+      // if (editor.a11yfirst.lastBadImageAltTextValue === 'useBadAltText'){
+      //   // fire ok
+      //   CKEDITOR.dialog.getCurrent().hide();
+      //   editor.a11yfirst.imageDialog.click('ok');
+      // }
+      //
+      // else {
+      //   editor.a11yfirst.imageAltText.focus();
+      // }
 
     },
     onShow: function(){
       var newMsg = lang.msgBadImageAltText;
       document.getElementById('message').innerHTML = newMsg;
+
+      var radioButton = this.getContentElement('general', 'radioButtonSelection');
+      var radioButtonValue = radioButton.getValue();
+      var newAltText = this.getContentElement('general', 'newAltText');
+
+      /*
+        Function to disable/enable the alt text field
+        depending on the selected radio button
+      */
+      function setAltTextState() {
+        radioButtonValue = radioButton.getValue();
+
+        if (radioButtonValue === 'useBadAltText')
+          newAltText.disable();
+        else if (radioButtonValue === 'correctAltText')
+          newAltText.enable();
+      }
+
+      /*
+        Setting alt text state at dialog load
+      */
+      setAltTextState();
+
+      /*
+        Adding native javascript listener to detect clicks
+        for ease in detecting changing values of the radio button
+      */
+      document.getElementById(radioButton.domId).addEventListener('change', setAltTextState);
+
+      var badAltTextEntry =  editor.a11yfirst.imageData.getAttribute("alt");
     },
     contents: [
       {
@@ -47,7 +82,8 @@ CKEDITOR.dialog.add( 'badAltText', function( editor, data) {
           },
           {
             type: 'text',
-            id: 'newAltText'
+            id: 'newAltText',
+            'default': editor.a11yfirst.imageData.getAttribute("alt")
           }
         ]
       }

@@ -21,7 +21,7 @@ CKEDITOR.dialog.add( 'insertdetectorDialog', function( editor ) {
 
             var enteredHtml = dialog.getValueOf('tab-basic', 'rawHtml');
 
-            editor.insertHtml( '<p>' + enteredHtml + '</p>' );
+            editor.insertElement( '<p>' + enteredHtml + '</p>' );
         }
     };
 });

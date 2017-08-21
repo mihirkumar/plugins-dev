@@ -12,22 +12,63 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
     minHeight: 300,
     onOk: function(){
 
-      editor.a11yfirst.lastLongImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
+      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
 
-      if (editor.a11yfirst.lastLongImageAltTextValue === 'useLongAltText'){
-        // fire ok
-        CKEDITOR.dialog.getCurrent().hide();
-        editor.a11yfirst.imageDialog.click('ok');
+      var radioButton = this.getContentElement('general', 'radioButtonSelection');
+
+      radioButton.removeAllListeners();
+      console.log(radioButton.getValue());
+      if (radioButton.getValue() === 'verifyLongAltText'){
+        editor.execCommand('altTextVerify');
       }
 
-      else {
-        editor.a11yfirst.imageAltText.focus();
-      }
+
+      // editor.a11yfirst.lastLongImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
+      //
+      // if (editor.a11yfirst.lastLongImageAltTextValue === 'useLongAltText'){
+      //   // fire ok
+      //   CKEDITOR.dialog.getCurrent().hide();
+      //   editor.a11yfirst.imageDialog.click('ok');
+      // }
+      //
+      // else {
+      //   editor.a11yfirst.imageAltText.focus();
+      // }
 
     },
     onShow: function(){
       var newMsg = lang.msgLongImageAltText;
       document.getElementById('message').innerHTML = newMsg;
+
+      var radioButton = this.getContentElement('general', 'radioButtonSelection');
+      var radioButtonValue = radioButton.getValue();
+      var newAltText = this.getContentElement('general', 'newAltText');
+
+      /*
+        Function to disable/enable the alt text field
+        depending on the selected radio button
+      */
+      function setAltTextState() {
+        radioButtonValue = radioButton.getValue();
+
+        if (radioButtonValue === 'useLongAltText' || radioButtonValue === 'verifyLongAltText')
+          newAltText.disable();
+        else if (radioButtonValue === 'shortenAltText')
+          newAltText.enable();
+      }
+
+      /*
+        Setting alt text state at dialog load
+      */
+      setAltTextState();
+
+      /*
+        Adding native javascript listener to detect clicks
+        for ease in detecting changing values of the radio button
+      */
+      document.getElementById(radioButton.domId).addEventListener('change', setAltTextState);
+
+      var longAltTextEntry = editor.a11yfirst.imageData.getAttribute("alt");
     },
     contents: [
       {
@@ -47,7 +88,8 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
           },
           {
             type: 'text',
-            id: 'newAltText'
+            id: 'newAltText',
+            'default': editor.a11yfirst.imageData.getAttribute("alt")
           }
         ]
       }

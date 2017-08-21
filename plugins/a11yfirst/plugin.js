@@ -50,49 +50,60 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     CKEDITOR.dialog.add( altTextVerifyCmd, this.path + 'dialog/inserted_image_verify.js' );
     editor.addCommand( altTextVerifyCmd, new CKEDITOR.dialogCommand( altTextVerifyCmd ) );
 
+    var firstEditorLoadCmd = 'firstEditorLoad';
+    CKEDITOR.dialog.add( firstEditorLoadCmd, this.path + 'dialog/first_editor_load.js' );
+    editor.addCommand ( firstEditorLoadCmd, new CKEDITOR.dialogCommand ( firstEditorLoadCmd ) );
+
+    editor.on('instanceReady', function(){
+      editor.execCommand ('firstEditorLoad');
+    });
+
     editor.on('insertElement', function(event) {
-      editor.a11yfirst.imageData = event.data;
-      var altText = editor.a11yfirst.imageData.getAttribute("alt");
-      var lang = editor.lang.a11yfirst;
-      var flag = false;
+      editor.execCommand ('firstEditorLoad');
+      var elementDataType = event.data.getName();
 
-      if (altText === null) {
-        // command for no alt text
-        flag = true;
-      }
+      if (elementDataType !== 'img')
+        return true;
 
-      else if (altText === "") {
-        // command for empty alt text
-        editor.execCommand('emptyAltText');
-        if (editor.a11yfirst.lastEmptyImageAltTextValue === 'addAltText') {
-          editor.a11yfirst.imageData.setAttribute("alt", editor.a11yfirst.newAltTextValue);
+      else if (elementDataType === 'img'){
+        editor.a11yfirst.imageData = event.data;
+
+        var altText = editor.a11yfirst.imageData.getAttribute("alt");
+        var lang = editor.lang.a11yfirst;
+
+        if (altText === null) {
+          // command for no alt text
         }
-        flag = true;
-      }
 
-      else if (altText.length > 100 ) {
-        editor.execCommand('longAltText');
-        flag = true;
-      }
+        else if (altText === "") {
+          // command for empty alt text
+          editor.execCommand('emptyAltText');
+          // if (editor.a11yfirst.lastEmptyImageAltTextValue === 'addAltText') {
+          //   editor.a11yfirst.imageData.setAttribute("alt", editor.a11yfirst.newAltTextValue);
+          }
 
-      var badAltText = editor.lang.a11yfirst.badImageAltText;
 
-      if (editor.a11yfirst.lastBadImageAltTextValue !== 'useBadAltText'){
+        else if (altText.length > 100 ) {
+          editor.execCommand('longAltText');
+        }
 
+        var badAltText = editor.lang.a11yfirst.badImageAltText;
+
+
+
+        // if (editor.a11yfirst.lastBadImageAltTextValue !== 'useBadAltText'){
+        //
         for (var i = 0; i < badAltText.length; i++) {
-
           if (altText.toLowerCase().endsWith(badAltText[i])) {
             editor.execCommand('badAltText');
-            flag = true;
             // return false;
           }
         }
+        // }
+        // else {
+        //   editor.a11yfirst.lastBadImageAltTextValue = undefined;
+        // }
       }
-      else {
-        editor.a11yfirst.lastBadImageAltTextValue = undefined;
-      }
-
-      // console.log(editor.a11yfirst.imageData.getAttribute("xyz"));
     });
 
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation
