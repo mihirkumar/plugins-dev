@@ -16,6 +16,7 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
 
       //if (editor.a11yfirst.lastEmptyImageAltTextValue === 'useEmptyAltText'){
         // fire ok
+        console.log('line 19');
       editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
 
       var radioButton = this.getContentElement('general', 'radioButtonSelection');
@@ -38,6 +39,7 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
 
     },
     onShow: function(){
+      console.log('line 42');
       var newMsg = lang.msgEmptyImageAltText;
       document.getElementById('message').innerHTML = newMsg;
 

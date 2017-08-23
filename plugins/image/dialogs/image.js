@@ -577,55 +577,55 @@
 						accessKey: 'T',
 						'default': '',
 						validate: function() {
-						//
-						// 	var altText = this.getValue();
-						//
-						// 	editor.a11yfirst.imageAltText = this;
-						// 	editor.a11yfirst.imageDialog = this.getDialog();
-						//
-						// 	if (!altText.length) {
-						// 		if (editor.a11yfirst.lastEmptyImageAltTextValue !== 'useEmptyAltText'){
-						// 			editor.execCommand('emptyAltText');
-						// 			return false;
-						// 		}
-						//
-						// 		else {
-						// 		editor.a11yfirst.lastEmptyImageAltTextValue = undefined;
-						// 		}
-						// 	}
-						//
-						// 	if (altText.length > 100) {
-						// 		if (editor.a11yfirst.lastLongImageAltTextValue !== 'useLongAltText'){
-						// 			editor.execCommand('longAltText');
-						// 			return false;
-						// 		}
-						//
-						// 		else {
-						// 		editor.a11yfirst.lastLongImageAltTextValue = undefined;
-						// 		}
-						// 	}
 
-							// var flag = false;
-							// var hasBeenWarned = false;
-							//
-							// if (!altText.length || altText.length > 100) {
-							// 	flag = true;
-							// }
-							//
-							// var badAltText = editor.lang.a11yfirst.badImageAltText;
-							//
-							// for (var i = 0; i < badAltText.length; i++) {
-							//
-							// 	if (altText.toLowerCase().endsWith(badAltText[i])) {
-							// 		flag = true;
-							// 	}
-							// }
-							//
-							// if (flag && !hasBeenWarned) {
-							// 	editor.execCommand('altTextWarning');
-							// 	hasBeenWarned = true;
-							// 	return false;
-							// }
+							var altText = this.getValue();
+
+							editor.a11yfirst.imageAltText = this;
+							editor.a11yfirst.imageDialog = this.getDialog();
+
+							if (!altText.length) {
+								if (editor.a11yfirst.lastEmptyImageAltTextValue !== 'useEmptyAltText'){
+									editor.execCommand('emptyAltText');
+									return false;
+								}
+
+								else {
+								editor.a11yfirst.lastEmptyImageAltTextValue = undefined;
+								}
+							}
+
+							if (altText.length > 100) {
+								if (editor.a11yfirst.lastLongImageAltTextValue !== 'useLongAltText'){
+									editor.execCommand('longAltText');
+									return false;
+								}
+
+								else {
+								editor.a11yfirst.lastLongImageAltTextValue = undefined;
+								}
+							}
+
+							var flag = false;
+							var hasBeenWarned = false;
+
+							if (!altText.length || altText.length > 100) {
+								flag = true;
+							}
+
+							var badAltText = editor.lang.a11yfirst.badImageAltText;
+
+							for (var i = 0; i < badAltText.length; i++) {
+
+								if (altText.toLowerCase().endsWith(badAltText[i])) {
+									flag = true;
+								}
+							}
+
+							if (flag && !hasBeenWarned) {
+								editor.execCommand('altTextWarning');
+								hasBeenWarned = true;
+								return false;
+							}
 
 							return true;
 						},
