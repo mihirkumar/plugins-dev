@@ -10,38 +10,11 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
     title: lang.dialogTitleImageAltText,
     minWidth: 500,
     minHeight: 300,
-    onOk: function(){
-
-      // editor.a11yfirst.lastEmptyImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
-
-      //if (editor.a11yfirst.lastEmptyImageAltTextValue === 'useEmptyAltText'){
-        // fire ok
-        console.log('line 19');
-      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
-
-      var radioButton = this.getContentElement('general', 'radioButtonSelection');
-
-      radioButton.removeAllListeners();
-
-      // CKEDITOR.dialog.getCurrent().hide();
-      // CKEDITOR.dialog.getCurrent().click('ok');
-
-      // editor.a11yfirst.lastEmptyImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
-
-
-
-      // editor.a11yfirst.imageDialog.click('ok');
-      //}
-
-      // else {
-      //   editor.a11yfirst.imageAltText.focus();
-      // }
-
-    },
     onShow: function(){
-      console.log('line 42');
       var newMsg = lang.msgEmptyImageAltText;
       document.getElementById('message').innerHTML = newMsg;
+
+      editor.a11yfirst.lastEmptyImageAltTextValue = 'useEmptyAltText';
 
       var radioButton = this.getContentElement('general', 'radioButtonSelection');
       var radioButtonValue = radioButton.getValue();
@@ -70,33 +43,6 @@ CKEDITOR.dialog.add( 'emptyAltText', function( editor, data) {
         for ease in detecting changing values of the radio button
       */
       document.getElementById(radioButton.domId).addEventListener('change', setAltTextState);
-    },
-    contents: [
-      {
-        id : 'general',
-        label : 'Settings',
-        elements :
-        [
-          {
-            type : 'html',
-            html : '<div id="message"></div>'
-          },
-          {
-            type: 'radio',
-            id: 'radioButtonSelection',
-            items: [ [ lang.labelDecorativeImageWarning, 'useEmptyAltText' ], [ lang.labelInformativeImageWarning, 'addAltText' ] ],
-            'default': 'useEmptyAltText'
-          },
-          {
-            type: 'text',
-            id: 'newAltText',
-            controlStyle: 'width: 25em'
-            // label: 'New Alt Text: '
-            // labelLayout: 'horizontal',
-            // widths: [10, 50]
-          }
-        ]
-      }
-    ],
+    }
   };
 } );

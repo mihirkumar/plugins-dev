@@ -78,7 +78,7 @@ CKEDITOR.dialog.add( 'altTextVerify', function( editor, data) {
           {
             id: 'newAltText',
             type: 'text',
-            'default': editor.a11yfirst.imageData.getAttribute("alt")
+            'default': editor.a11yfirst.imageAltText.getValue()
           }
         ]
       }

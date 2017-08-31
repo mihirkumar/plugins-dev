@@ -23,6 +23,7 @@ CKEDITOR.plugins.add( 'blockformat', {
     var codesnippetCmd = 'codeSnippet';
     var helpCmd = 'blockformatHelp';
 
+    var myString = "hello";
     // Initialize help menuitem
     /*
     CKEDITOR.dialog.add( helpCmd, this.path + 'dialogs/blockformat-help.js' );
@@ -37,7 +38,7 @@ CKEDITOR.plugins.add( 'blockformat', {
       group: 'blockformatMain',
       order: 0,
       onClick: function () {
-        editor.execCommand( blockquoteCmd );
+        editor.execCommand( blockquoteCmd, myString );
       }
     };
 
@@ -46,7 +47,7 @@ CKEDITOR.plugins.add( 'blockformat', {
       group: 'blockformatMain',
       order: 1,
       onClick: function () {
-        editor.execCommand( codesnippetCmd );
+        editor.execCommand( codesnippetCmd, myString );
       }
     };
 

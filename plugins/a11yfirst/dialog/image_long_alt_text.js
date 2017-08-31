@@ -12,7 +12,7 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
     minHeight: 300,
     onOk: function(){
 
-      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
+      editor.a11yfirst.imageAltText.setValue(this.getValueOf('general', 'newAltText'));
 
       var radioButton = this.getContentElement('general', 'radioButtonSelection');
 
@@ -39,6 +39,8 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
     onShow: function(){
       var newMsg = lang.msgLongImageAltText;
       document.getElementById('message').innerHTML = newMsg;
+
+      editor.a11yfirst.lastLongImageAltTextValue = 'useLongAltText';
 
       var radioButton = this.getContentElement('general', 'radioButtonSelection');
       var radioButtonValue = radioButton.getValue();
@@ -68,7 +70,7 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
       */
       document.getElementById(radioButton.domId).addEventListener('change', setAltTextState);
 
-      var longAltTextEntry = editor.a11yfirst.imageData.getAttribute("alt");
+      // var longAltTextEntry = editor.a11yfirst.imageData.getAttribute("alt");
     },
     contents: [
       {
@@ -89,7 +91,8 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
           {
             type: 'text',
             id: 'newAltText',
-            'default': editor.a11yfirst.imageData.getAttribute("alt")
+            'default': editor.a11yfirst.imageAltText.getValue()
+            // 'default': editor.a11yfirst.imageData.getAttribute("alt")
           }
         ]
       }

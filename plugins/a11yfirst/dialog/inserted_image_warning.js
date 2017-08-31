@@ -19,7 +19,7 @@ CKEDITOR.dialog.add( 'altTextWarning', function( editor, data) {
       //   CKEDITOR.dialog.getCurrent().hide();
       //   editor.a11yfirst.imageDialog.click('ok');
       // }
-      
+
       // else {
       //   editor.a11yfirst.imageAltText.focus();
       // }
@@ -38,13 +38,14 @@ CKEDITOR.dialog.add( 'altTextWarning', function( editor, data) {
             type : 'html',
             html : '<div id="message"></div>'
           },
-          { 
+          {
             id: 'altTextField',
             label: 'Alt text',
-            type: 'text'
+            type: 'text',
+            'default': 'default': editor.a11yfirst.imageAltText.getValue()
           }
         ]
-      }   
+      }
     ],
   };
 } );

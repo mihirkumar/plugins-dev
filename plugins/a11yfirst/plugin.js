@@ -58,59 +58,54 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     //   editor.execCommand ('firstEditorLoad');
     // });
 
-    // editor.on('insertElement', function(event) {
-    //   // editor.execCommand ('firstEditorLoad');
-    //   if (typeof event.data.getName === "function" )
-    //     console.log('yay');
-    //   console.log(event.data);
-    //   console.log(event.data.getName);
-    //   var elementDataType = event.data.getName();
-    //
-    //   if (elementDataType !== 'img'){
-    //     console.log(event.data);
-    //     return true;
-    //   }
-    //
-    //   else if (elementDataType === 'img'){
-    //     editor.a11yfirst.imageData = event.data;
-    //
-    //     var altText = editor.a11yfirst.imageData.getAttribute("alt");
-    //     var lang = editor.lang.a11yfirst;
-    //
-    //     if (altText === null) {
-    //       // command for no alt text
-    //     }
-    //
-    //     else if (altText === "") {
-    //       // command for empty alt text
-    //       editor.execCommand('emptyAltText');
-    //       // if (editor.a11yfirst.lastEmptyImageAltTextValue === 'addAltText') {
-    //       //   editor.a11yfirst.imageData.setAttribute("alt", editor.a11yfirst.newAltTextValue);
-    //       }
-    //
-    //
-    //     else if (altText.length > 100 ) {
-    //       editor.execCommand('longAltText');
-    //     }
-    //
-    //     var badAltText = editor.lang.a11yfirst.badImageAltText;
-    //
-    //
-    //
-    //     // if (editor.a11yfirst.lastBadImageAltTextValue !== 'useBadAltText'){
-    //     //
-    //     for (var i = 0; i < badAltText.length; i++) {
-    //       if (altText.toLowerCase().endsWith(badAltText[i])) {
-    //         editor.execCommand('badAltText');
-    //         // return false;
-    //       }
-    //     }
-    //     // }
-    //     // else {
-    //     //   editor.a11yfirst.lastBadImageAltTextValue = undefined;
-    //     // }
-    //   }
-    // });
+    editor.on('insertElement', function(event) {
+      // editor.execCommand ('firstEditorLoad');
+      // if (typeof event.data.getName === "function" )
+      //   console.log('yay');
+      // console.log(event.data);
+      // console.log(event.data.getName);
+      var elementDataType = event.data.getName();
+
+      if (elementDataType !== 'img'){
+        // console.log(event.data);
+        return true;
+      }
+
+      else if (elementDataType === 'img'){
+        editor.a11yfirst.imageData = event.data;
+
+        var altText = editor.a11yfirst.imageData.getAttribute("alt");
+        var lang = editor.lang.a11yfirst;
+        var flag = [];
+
+        if (altText === null) {
+          alert('Alt text is not present.');
+        }
+
+        // for empty alt text
+        if (!altText.length) {
+          alert('Alt text: ' + altText + '. ' + lang.msgEmptyImageAltText);
+          return false;
+        }
+
+        // for long alt text
+        if (altText.length > 100) {
+            alert('Alt text: ' + altText + '. ' +  lang.msgLongImageAltText);
+            return false;
+        }
+
+        //for bad alt text (containing filename)
+        var badAltText = editor.lang.a11yfirst.badImageAltText;
+
+        for (var i = 0; i < badAltText.length; i++) {
+
+          if (altText.toLowerCase().endsWith(badAltText[i])) {
+            alert('Alt text: ' + altText + ' ' + lang.msgBadImageAltText);
+            return false;
+          }
+        }
+      }
+    });
 
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation
     // If the editor.a11yfirst namespace isn't defined, define one

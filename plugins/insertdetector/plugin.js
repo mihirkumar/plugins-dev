@@ -3,7 +3,7 @@ CKEDITOR.plugins.add( 'insertdetector', {
     init: function( editor ) {
         editor.addCommand( 'insertdetector', new CKEDITOR.dialogCommand( 'insertdetectorDialog' ) );
         editor.ui.addButton( 'Insertdetector', {
-            label: 'Insert Abbreviation',
+            label: 'Test',
             command: 'insertdetector',
             toolbar: 'insert'
         });

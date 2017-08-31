@@ -13,7 +13,8 @@
 	}
 
 	var commandObject = {
-		exec: function( editor ) {
+		exec: function( editor, data ) {
+			console.log(data);
 			var state = editor.getCommand( 'blockquote' ).state,
 				selection = editor.getSelection(),
 				range = selection && selection.getRanges()[ 0 ];
