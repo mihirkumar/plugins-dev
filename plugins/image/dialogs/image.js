@@ -621,11 +621,16 @@
 								}
 							}
 
-							if (flag && !hasBeenWarned) {
-								editor.execCommand('altTextWarning');
-								hasBeenWarned = true;
-								return false;
-							}
+							/*
+								Image Alt Text final warning code has
+								been commented out. Uncomment it for
+								required functionality.
+							*/
+							// if (flag && !hasBeenWarned) {
+							// 	editor.execCommand('altTextWarning');
+							// 	hasBeenWarned = true;
+							// 	return false;
+							// }
 
 							return true;
 						},

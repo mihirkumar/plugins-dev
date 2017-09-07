@@ -11,7 +11,7 @@ CKEDITOR.dialog.add( 'badAltText', function( editor, data) {
     minWidth: 500,
     minHeight: 300,
     onOk: function(){
-      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
+      editor.a11yfirst.imageAltText.setValue(this.getValueOf('general', 'newAltText'));
 
       var radioButton = this.getContentElement('general', 'radioButtonSelection');
 

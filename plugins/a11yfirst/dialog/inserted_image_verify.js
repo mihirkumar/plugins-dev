@@ -11,20 +11,11 @@ CKEDITOR.dialog.add( 'altTextVerify', function( editor, data) {
     minWidth: 500,
     minHeight: 300,
     onOk: function(){
-      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
+      editor.a11yfirst.imageAltText.setValue(this.getValueOf('general', 'newAltText'));
 
       var radioButton = this.getContentElement('general', 'radioButtonSelection');
 
       radioButton.removeAllListeners();
-      // if (editor.a11yfirst.lastWarningImageAltText !== verifyAltText) {
-      //   alert('The alt text has been changed. Press "Cancel" to go back and change alt text.');
-      //   return false;
-      // }
-      //
-      // else {
-      //   CKEDITOR.dialog.getCurrent().hide();
-      //   editor.a11yfirst.imageDialog.click('ok');
-      // }
     },
     onShow: function(){
       // this.setValueOf('general', 'altTextField', editor.a11yfirst.lastWarningImageAltText);
@@ -78,7 +69,7 @@ CKEDITOR.dialog.add( 'altTextVerify', function( editor, data) {
           {
             id: 'newAltText',
             type: 'text',
-            'default': editor.a11yfirst.imageData.getAttribute("alt")
+            'default': editor.a11yfirst.imageAltText.getValue()
           }
         ]
       }

@@ -12,29 +12,23 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
     minHeight: 300,
     onOk: function(){
 
-      editor.a11yfirst.imageData.setAttribute("alt", this.getValueOf('general', 'newAltText'));
+      editor.a11yfirst.imageAltText.setValue(this.getValueOf('general', 'newAltText'));
+
+      editor.a11yfirst.lastLongImageAltTextValue = 'useLongAltText';
 
       var radioButton = this.getContentElement('general', 'radioButtonSelection');
 
       radioButton.removeAllListeners();
-      console.log(radioButton.getValue());
-      if (radioButton.getValue() === 'verifyLongAltText'){
-        editor.execCommand('altTextVerify');
-      }
 
-
-      // editor.a11yfirst.lastLongImageAltTextValue = this.getValueOf('general', 'radioButtonSelection');
-      //
-      // if (editor.a11yfirst.lastLongImageAltTextValue === 'useLongAltText'){
-      //   // fire ok
-      //   CKEDITOR.dialog.getCurrent().hide();
-      //   editor.a11yfirst.imageDialog.click('ok');
+      /*
+        Image alt text verification dialog box trigger
+        has been commented out below.
+        Uncomment it if you wish to enable functionality
+      */
+      // console.log(radioButton.getValue());
+      // if (radioButton.getValue() === 'verifyLongAltText'){
+      //   editor.execCommand('altTextVerify');
       // }
-      //
-      // else {
-      //   editor.a11yfirst.imageAltText.focus();
-      // }
-
     },
     onShow: function(){
       var newMsg = lang.msgLongImageAltText;
@@ -67,8 +61,6 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
         for ease in detecting changing values of the radio button
       */
       document.getElementById(radioButton.domId).addEventListener('change', setAltTextState);
-
-      var longAltTextEntry = editor.a11yfirst.imageData.getAttribute("alt");
     },
     contents: [
       {
@@ -89,7 +81,7 @@ CKEDITOR.dialog.add( 'longAltText', function( editor, data) {
           {
             type: 'text',
             id: 'newAltText',
-            'default': editor.a11yfirst.imageData.getAttribute("alt")
+            'default': editor.a11yfirst.imageAltText.getValue()
           }
         ]
       }
