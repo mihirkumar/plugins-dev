@@ -22,37 +22,37 @@ CKEDITOR.plugins.add( 'a11yfirst', {
       this._.list.addSeparator();
     };
 
-    var emptyLinkDisplayTextCmd = 'emptyLinkDisplayText';
-    CKEDITOR.dialog.add( emptyLinkDisplayTextCmd, this.path + 'dialog/link_empty_display_text.js' );
-    editor.addCommand( emptyLinkDisplayTextCmd, new CKEDITOR.dialogCommand( emptyLinkDisplayTextCmd ) );
-
-    var badLinkDisplayTextCmd = 'badLinkDisplayText';
-    CKEDITOR.dialog.add( badLinkDisplayTextCmd, this.path + 'dialog/link_bad_display_text.js' );
-    editor.addCommand( badLinkDisplayTextCmd, new CKEDITOR.dialogCommand( badLinkDisplayTextCmd ) );
-
-    var emptyAltTextCmd = 'emptyAltText';
-    CKEDITOR.dialog.add( emptyAltTextCmd, this.path + 'dialog/image_empty_alt_text.js' );
-    editor.addCommand( emptyAltTextCmd, new CKEDITOR.dialogCommand( emptyAltTextCmd ) );
-
-    var longAltTextCmd = 'longAltText';
-    CKEDITOR.dialog.add( longAltTextCmd, this.path + 'dialog/image_long_alt_text.js' );
-    editor.addCommand( longAltTextCmd, new CKEDITOR.dialogCommand( longAltTextCmd ) );
-
-    var badAltTextCmd = 'badAltText';
-    CKEDITOR.dialog.add( badAltTextCmd, this.path + 'dialog/image_bad_alt_text.js' );
-    editor.addCommand( badAltTextCmd, new CKEDITOR.dialogCommand( badAltTextCmd ) );
-
-    var altTextWarningCmd = 'altTextWarning';
-    CKEDITOR.dialog.add( altTextWarningCmd, this.path + 'dialog/inserted_image_warning.js' );
-    editor.addCommand( altTextWarningCmd, new CKEDITOR.dialogCommand( altTextWarningCmd ) );
-
-    var altTextVerifyCmd = 'altTextVerify';
-    CKEDITOR.dialog.add( altTextVerifyCmd, this.path + 'dialog/inserted_image_verify.js' );
-    editor.addCommand( altTextVerifyCmd, new CKEDITOR.dialogCommand( altTextVerifyCmd ) );
-
-    var firstEditorLoadCmd = 'firstEditorLoad';
-    CKEDITOR.dialog.add( firstEditorLoadCmd, this.path + 'dialog/first_editor_load.js' );
-    editor.addCommand ( firstEditorLoadCmd, new CKEDITOR.dialogCommand ( firstEditorLoadCmd ) );
+    // var emptyLinkDisplayTextCmd = 'emptyLinkDisplayText';
+    // CKEDITOR.dialog.add( emptyLinkDisplayTextCmd, this.path + 'dialog/link_empty_display_text.js' );
+    // editor.addCommand( emptyLinkDisplayTextCmd, new CKEDITOR.dialogCommand( emptyLinkDisplayTextCmd ) );
+    //
+    // var badLinkDisplayTextCmd = 'badLinkDisplayText';
+    // CKEDITOR.dialog.add( badLinkDisplayTextCmd, this.path + 'dialog/link_bad_display_text.js' );
+    // editor.addCommand( badLinkDisplayTextCmd, new CKEDITOR.dialogCommand( badLinkDisplayTextCmd ) );
+    //
+    // var emptyAltTextCmd = 'emptyAltText';
+    // CKEDITOR.dialog.add( emptyAltTextCmd, this.path + 'dialog/image_empty_alt_text.js' );
+    // editor.addCommand( emptyAltTextCmd, new CKEDITOR.dialogCommand( emptyAltTextCmd ) );
+    //
+    // var longAltTextCmd = 'longAltText';
+    // CKEDITOR.dialog.add( longAltTextCmd, this.path + 'dialog/image_long_alt_text.js' );
+    // editor.addCommand( longAltTextCmd, new CKEDITOR.dialogCommand( longAltTextCmd ) );
+    //
+    // var badAltTextCmd = 'badAltText';
+    // CKEDITOR.dialog.add( badAltTextCmd, this.path + 'dialog/image_bad_alt_text.js' );
+    // editor.addCommand( badAltTextCmd, new CKEDITOR.dialogCommand( badAltTextCmd ) );
+    //
+    // var altTextWarningCmd = 'altTextWarning';
+    // CKEDITOR.dialog.add( altTextWarningCmd, this.path + 'dialog/inserted_image_warning.js' );
+    // editor.addCommand( altTextWarningCmd, new CKEDITOR.dialogCommand( altTextWarningCmd ) );
+    //
+    // var altTextVerifyCmd = 'altTextVerify';
+    // CKEDITOR.dialog.add( altTextVerifyCmd, this.path + 'dialog/inserted_image_verify.js' );
+    // editor.addCommand( altTextVerifyCmd, new CKEDITOR.dialogCommand( altTextVerifyCmd ) );
+    //
+    // var firstEditorLoadCmd = 'firstEditorLoad';
+    // CKEDITOR.dialog.add( firstEditorLoadCmd, this.path + 'dialog/first_editor_load.js' );
+    // editor.addCommand ( firstEditorLoadCmd, new CKEDITOR.dialogCommand ( firstEditorLoadCmd ) );
 
     // editor.on('instanceReady', function(){
     //   editor.execCommand ('firstEditorLoad');
@@ -111,6 +111,34 @@ CKEDITOR.plugins.add( 'a11yfirst', {
     //     // }
     //   }
     // });
+
+    editor.on('insertElement', function(event){
+      var altText = event.data.getAttribute("alt");
+
+      var elementDataType = event.data.getName();
+
+      if (elementDataType === 'img'){
+        // do stuff
+        if (altText.length == 0) {
+          alert("The alt text field is empty. Is this alt text appropriate?");
+        }
+
+        if (altText.length > 100) {
+          alert("The alt text entered was: " + altText + ". Is this alt text appropriate?");
+        }
+
+        var lang = editor.lang.a11yfirst;
+
+        var badAltText = editor.lang.a11yfirst.badImageAltText;
+
+        for (var i = 0; i < badAltText.length; i++) {
+          if (altText.toLowerCase().endsWith(badAltText[i])) {
+            alert("The alt text entered was: " + altText + ". Is this alt text appropriate?");
+          }
+        }
+
+      }
+    });
 
     // For accessibility purposes, defining a namespace to use global variables for appropriate empty display text validation
     // If the editor.a11yfirst namespace isn't defined, define one
